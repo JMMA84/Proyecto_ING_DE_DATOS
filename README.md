@@ -1,13 +1,13 @@
 # Proyecto_ING_DE_DATOS
 
-## Resumen del Proyecto.
+## Resumen del Proyecto:
 
-## El Problema a Resolver.
+## El Problema a Resolver:
 
-## Objetivo Principal.
+## Objetivo Principal:
 
-## Objetivos Especificos.
+## Objetivos Especificos:
 
 ## El Alcance del Proyecto:
 
-## Metodologia Usada:
+## Metodologia Usada: Kanban
