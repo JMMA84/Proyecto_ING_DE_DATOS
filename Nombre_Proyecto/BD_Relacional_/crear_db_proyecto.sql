@@ -63,8 +63,50 @@ CALL registrarRendimiento(88,1, 100,  20, 2,  10,  1,'comentario de prueba', 'Ju
 CALL registrarRendimiento(87,1, 0,  0, 0,  0,  0,'comentario de prueba', 'Juvenil',1);
 CALL registrarRendimiento(86,1, 1,  1, 1,  1,  1,'comentario de prueba', 'Juvenil',1);
 
+
+
+
+/* una consulta basica */
+SELECT * FROM actividadBD;
+SELECT * FROM rendimientoJugador;
+SELECT * FROM usuario;
+
+/* 7 consultas especificas */
+-- 1: crear ranking de jugador
+	SELECT idUsuario,nombreUsuario, SUM(metrosRecorridos) AS metrosRecorridos, SUM(pasesRealizados) AS pasesRealizados, SUM(golesRealizados) AS golesRealizados, SUM(pasesFallidos) AS pasesFallidos, SUM(golesFallidos) AS golesFallidos, SUM((metrosRecorridos * 0.1 + pasesRealizados * 1 + golesRealizados * 3) - (pasesFallidos * 0.5 + golesFallidos*2)) AS puntaje FROM
+        rendimientoJugador rj INNER JOIN usuario u ON u.idUsuario = rj.idUsuarioFK 
+		GROUP BY u.idUsuario, u.nombreUsuario
+		ORDER BY puntaje DESC;
+        
+-- 2: consultar jugadores por evento especifico
+     SELECT idEvento, tipoEvento, fechaEvento, resumenEvento, nombreUsuario, metrosRecorridos, pasesRealizados, golesRealizados, pasesFallidos, golesFallidos FROM 
+		evento e INNER JOIN rendimientoJugador rj ON 1 = e.idEvento = rj.idEventoFK INNER JOIN usuario u ON u.idUsuario = rj.idUsuarioFK;
+        
+-- 3: consultar eventos por categoria especifica
+     SELECT idCategoria, nombreCategoria, fechaEvento, resumenEvento FROM 
+		categoria c INNER JOIN rendimientoJugador rj ON c.idCategoria = 2 INNER JOIN evento e ON e.idEvento = rj.idEventoFK;
+        
+-- 4: consultar categorias de jugador
+	 SELECT idUsuario, nombreUsuario, nombreCategoria FROM categoria c INNER JOIN rendimientoJugador rj ON c.idCategoria = rj.idRendimiento INNER JOIN usuario u ON rj.idUsuarioFK = u.idUsuario GROUP BY c.nombreCategoria;
+     
+-- 5: consultar jugadores activos
+	SELECT nombreUsuario FROM usuario WHERE estadoUsuario = 1;
+    
+-- 6: consultar rendimiento de un jugador en un evento especifico
+	SELECT u.nombreUsuario, e.tipoEvento, r.metrosRecorridos, r.pasesRealizados, r.golesRealizados FROM rendimientojugador r JOIN usuario u ON r.idUsuarioFK = u.idUsuario JOIN evento e ON r.idEventoFK = e.idEvento WHERE e.idEvento = 1;
+
+-- 7: consultar jugadores por asistencia a un evento especifico
+	SELECT u.nombreUsuario, e.tipoEvento, r.asistencia FROM rendimientojugador r JOIN usuario u ON r.idUsuarioFK = u.idUsuario JOIN evento e ON r.idEventoFK = e.idEvento WHERE e.idEvento = 1 AND r.asistencia = 1;
+
+/* 5 modificaciones */
+UPDATE usuario SET nombreUsuario = 'Martinez, Jose', tipoUsuario = 'Profesor' WHERE idUsuario = 80;
+UPDATE usuario SET nombreUsuario = 'Martinez, Mauricio', tipoUsuario = 'Profesor' WHERE idUsuario = 81;
+UPDATE usuario SET nombreUsuario = 'Reyes, Jose', tipoUsuario = 'Profesor' WHERE idUsuario = 82;
+UPDATE usuario SET nombreUsuario = 'Tello, Fabio', tipoUsuario = 'Profesor' WHERE idUsuario = 83;
+UPDATE usuario SET nombreUsuario = 'Alvarracin, Miguel', tipoUsuario = 'Profesor' WHERE idUsuario = 84;
+
+/* una eliminacion */
 DELETE FROM categoria WHERE idCategoria =12;
 DELETE FROM rendimientoJugador WHERE idRendimiento = 8;
 
-SELECT * FROM actividadBD;
 /* DROP DATABASE bogotaCityFC; */
